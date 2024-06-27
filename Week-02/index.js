@@ -13,15 +13,16 @@ function calculateSum(counter) {
 }
 
 function handleFirstRequest(req, res) {
-  var counter = req.query.counter;
+  var counter = req.headers.counter;
+  //var counter = req.query.counter;
   var calculatedSum = calculateSum(counter);
   var answer = "The sum of the first 100 numbers is " + calculatedSum;
   res.send(answer);
 }
 
 function handleSecondRequest(req, res) {
-  var str1 = req.query.str1;
-  var str2 = req.query.str2;
+  var str1 = req.headers.str1;
+  var str2 = req.headers.str2;
   var answer = anagram(str1, str2);
   if (answer) {
     res.send("The Given Strings are Anagrams");
@@ -31,8 +32,8 @@ function handleSecondRequest(req, res) {
 }
 
 function handleThirdRequest(req, res) {
-  var str1 = req.query.str1;
-  var answer = palindrome(str1);
+  var str3 = req.headers.str3;
+  var answer = palindrome(str3);
   if (answer) {
     res.send("The Given String is a Palindrome");
   } else {
@@ -40,9 +41,10 @@ function handleThirdRequest(req, res) {
   }
 }
 
-app.get("/sum", handleFirstRequest);
-app.get("/isanagram", handleSecondRequest);
-app.get("/ispalindrome", handleThirdRequest);
+//app.get("/sum", handleFirstRequest);
+app.post("/sum", handleFirstRequest);
+app.post("/isanagram", handleSecondRequest);
+app.post("/ispalindrome", handleThirdRequest);
 
 function started() {
   console.log(`Server started at http://localhost:${port}`);
