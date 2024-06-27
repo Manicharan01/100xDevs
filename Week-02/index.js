@@ -31,7 +31,7 @@ function calculateMul(counter) {
 //app.use(middleware);
 
 function handleFirstRequest(req, res) {
-  var counter = req.body.counter;
+  var counter = req.query.counter;
   //var counter = req.headers.counter;
   //var counter = req.query.counter;
   var calculatedSum = calculateSum(counter);
@@ -41,6 +41,10 @@ function handleFirstRequest(req, res) {
     mul: calculatedMul,
   };
   res.send(answerObject);
+}
+
+function givePage(req, res) {
+  res.sendFile(__dirname + "/index.html");
 }
 
 function handleSecondRequest(req, res) {
@@ -65,7 +69,8 @@ function handleThirdRequest(req, res) {
 }
 
 //app.get("/sum", handleFirstRequest);
-app.post("/sum", handleFirstRequest);
+app.get("/", givePage);
+app.get("/sum", handleFirstRequest);
 app.post("/isanagram", handleSecondRequest);
 app.post("/ispalindrome", handleThirdRequest);
 
