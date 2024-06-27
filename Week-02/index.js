@@ -12,6 +12,13 @@ function calculateSum(counter) {
   return sum;
 }
 
+//function middleware(req, res, next) {
+//  console.log("Middleware is working");
+//  next();
+//}
+
+//app.use(middleware);
+
 function handleFirstRequest(req, res) {
   var counter = req.headers.counter;
   //var counter = req.query.counter;
