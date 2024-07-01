@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+    <title>TODO</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <script>
+    function getTasks() {
+      fetch("http://localhost:3000/todos", {
+        method: "GET",
+      }).then((result) => {
+        result.json().then((text) => {
+          console.log(text);
+          var tasks = document.getElementById("tasks");
+          //tasks.innerHTML = JSON.stringify(text);
+          for (let i = 0; i < text.length; i++) {
+            var childElement = document.createElement("div");
+            var grandChildSpan1 = document.createElement("span");
+            var grandChildSpan2 = document.createElement("span");
+            var grandChildButton = document.createElement("button");
+
+            grandChildSpan1.innerHTML = text[i].title;
+            grandChildSpan2.innerHTML = text[i].description;
+            grandChildButton.innerHTML = "Delete";
+            childElement.appendChild(grandChildSpan1);
+            childElement.appendChild(grandChildSpan2);
+            childElement.appendChild(grandChildButton);
+
+            tasks.appendChild(childElement);
+          }
+        });
+      });
+    }
+
+    getTasks();
+
+    function deleteTask(id) {
+      console.log(id);
+      fetch(`http://localhost:3000/todos/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((result) => {
+        console.log(result);
+        let tasks = document.getElementById("tasks");
+        for (let i = 0; i < tasks.children.length; i++) {
+          if (
+            tasks.children[i].children[2]
+              .getAttribute("onclick")
+              .split("(")[1]
+              .split(")")[0] == id
+          ) {
+            tasks.removeChild(tasks.children[i]);
+          }
+        }
+      });
+    }
+
+    function addTask() {
+      var title = document.getElementById("input").value;
+      var description = document.getElementById("description").value;
+      fetch("http://localhost:3000/todos", {
+        method: "POST",
+        body: JSON.stringify({
+          title: title,
+          description: description,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((result) => {
+        result.json().then((text) => {
+          console.log(text);
+          var tasks = document.getElementById("tasks");
+          var childElement = document.createElement("div");
+          var grandChildSpan1 = document.createElement("span");
+          var grandChildSpan2 = document.createElement("span");
+          var grandChildButton = document.createElement("button");
+
+          grandChildSpan1.innerHTML = text.title;
+          grandChildSpan2.innerHTML = text.description;
+          grandChildButton.innerHTML = "Delete";
+          grandChildButton.setAttribute("onclick", `deleteTask(${text.id})`);
+          childElement.appendChild(grandChildSpan1);
+          childElement.appendChild(grandChildSpan2);
+          childElement.appendChild(grandChildButton);
+
+          tasks.appendChild(childElement);
+        });
+      });
+    }
+  </script>
+  <body>
+    <h1>TODO</h1>
+    <label for="input">Titile of the Task</label><br />
+    <input type="text" id="input" placeholder="Task Titile" />
+    <br /><br />
+    <label for="input">Description of the Task</label><br />
+    <input type="text" id="description" placeholder="Add a new task" />
+    <br /><br />
+    <button onclick="addTask()">Add</button>
+    <div id="tasks"></div>
+  </body>
+</html>
