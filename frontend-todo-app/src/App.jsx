@@ -45,25 +45,14 @@ function App() {
         <>
             <div>
                 <input type="text" value={title} onChange={changeTitle} placeholder="Title" />
+                <br></br>
+                <br></br>
                 <input type="text" value={description} onChange={changeDescription} placeholder="Description" />
-                <button onClick={
-                    () => {
-                        fetch("http://localhost:3000/todos", {
-                            method: "POST",
-                            body: JSON.stringify({
-                                title: title,
-                                description: description,
-                            }),
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                        }).then((result) => {
-                            result.json().then((text) => {
-                                console.log(text);
-                            });
-                        });
-                    }
-                }>Add</button>
+                <br></br>
+                <br></br>
+                <AddTodo title={title} description={description} />
+                <br></br>
+                <br></br>
             </div >
             {
                 todos.map((todo) => {
@@ -95,6 +84,29 @@ function Todo(props) {
             <br></br>
             <br></br>
         </div>
+    )
+}
+
+function AddTodo(props) {
+    return (
+        <button onClick={
+            () => {
+                fetch("http://localhost:3000/todos", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        title: props.title,
+                        description: props.description,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }).then((result) => {
+                    result.json().then((text) => {
+                        console.log(text);
+                    });
+                });
+            }
+        }> Add </button>
     )
 }
 
