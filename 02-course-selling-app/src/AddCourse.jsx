@@ -2,11 +2,11 @@ import { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
-import { Typography } from '@mui/material';
 
 function AddCourse() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [imageLink, setImageLink] = useState('');
 
     const changeTitle = (e) => {
         setTitle(e.target.value)
@@ -14,6 +14,10 @@ function AddCourse() {
 
     const changeDescription = (e) => {
         setDescription(e.target.value)
+    }
+
+    const changeImageLink = (e) => {
+        setImageLink(e.target.value)
     }
 
     return (
@@ -38,7 +42,15 @@ function AddCourse() {
                     onChange={changeDescription}
                 />
                 <br /><br />
-                <ButtonMine title={title} description={description} />
+                <TextField
+                    fullWidth={true}
+                    label="Image Link"
+                    variant="outlined"
+                    value={imageLink}
+                    onChange={changeImageLink}
+                />
+                <br /><br />
+                <ButtonMine title={title} description={description} imageLink={imageLink} />
             </Card>
         </div>
     )
@@ -53,7 +65,7 @@ function ButtonMine(props) {
                     body: JSON.stringify({
                         title: props.title,
                         description: props.description,
-                        imagelLink: "",
+                        imageLink: props.imageLink,
                         published: true
                     }),
                     headers: {

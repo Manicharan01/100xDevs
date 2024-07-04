@@ -74,6 +74,7 @@ function ButtonMine(props) {
                     .then((data) => {
                         localStorage.setItem("token", data.token);
                         alert(data.message)
+                        window.location.href = '/courses';
                     });
             }
         } >Sign Up</Button>
