@@ -8,7 +8,7 @@ function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const changEmail = (e) => {
+    const changeEmail = (e) => {
         setEmail(e.target.value);
     }
 
@@ -38,7 +38,7 @@ function Signup() {
                         label="E-mail"
                         variant="outlined"
                         value={email}
-                        onChange={changEmail}
+                        onChange={changeEmail}
                     />
                     <br /><br />
                     <TextField
@@ -57,6 +57,7 @@ function Signup() {
 }
 
 function ButtonMine(props) {
+    console.log(props.email)
     return (
         <Button size={"large"} variant="contained" onClick={
             () => {
@@ -72,7 +73,7 @@ function ButtonMine(props) {
                 }).then((res) => res.json())
                     .then((data) => {
                         localStorage.setItem("token", data.token);
-                        alert(data.message);
+                        alert(data.message)
                     });
             }
         } >Sign Up</Button>

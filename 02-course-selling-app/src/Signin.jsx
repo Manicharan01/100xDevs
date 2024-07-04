@@ -8,7 +8,7 @@ function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const changEmail = (e) => {
+    const changeEmail = (e) => {
         setEmail(e.target.value);
     }
 
@@ -38,7 +38,7 @@ function Signup() {
                         label="E-mail"
                         variant="outlined"
                         value={email}
-                        onChange={changEmail}
+                        onChange={changeEmail}
                     />
                     <br /><br />
                     <TextField
@@ -64,6 +64,7 @@ function ButtonMine(props) {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
                     },
                     body: JSON.stringify({
                         username: props.email,
@@ -71,7 +72,7 @@ function ButtonMine(props) {
                     }),
                 }).then((res) => res.json())
                     .then((data) => {
-                        alert(data, message);
+                        alert(data.message);
                     });
             }
         } >Log in</Button>
