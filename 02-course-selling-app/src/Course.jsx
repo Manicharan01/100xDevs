@@ -36,7 +36,7 @@ function Course() {
     return (
         <div>
             <CourseCard specificCourse={specificCourse} />
-            <UpdateCard specificCourse={specificCourse} />
+            <UpdateCard specificCourse={specificCourse} setCourses={setCourses} courses={courses} />
         </div>
     );
 }
@@ -45,28 +45,33 @@ function CourseCard(props) {
     const specificCourse = props.specificCourse;
 
     return (
-        <Card key={specificCourse.id} style={{
-            marginTop: 10,
-            marginRight: 10,
-            marginLeft: 10,
-            width: 300,
-            minHeight: 200,
-
+        <div style={{
+            display: "flex",
+            justifyContent: "center"
         }}>
-            <Typography
-                variant={"h6"}
-                textAlign={"center"}
-            >
-                {specificCourse.title}
-            </Typography>
-            <Typography
-                variant={"subtitle1"}
-                textAlign={"center"}
-            >
-                {specificCourse.description}
-            </Typography>
-            <img src={specificCourse.imageLink} alt={specificCourse.title} style={{ marginTop: 20, width: 300, objectFit: 'fill' }} />
-        </Card>
+            <Card key={specificCourse.id} style={{
+                marginTop: 10,
+                marginRight: 10,
+                marginLeft: 10,
+                width: 300,
+                minHeight: 200,
+
+            }}>
+                <Typography
+                    variant={"h6"}
+                    textAlign={"center"}
+                >
+                    {specificCourse.title}
+                </Typography>
+                <Typography
+                    variant={"subtitle1"}
+                    textAlign={"center"}
+                >
+                    {specificCourse.description}
+                </Typography>
+                <img src={specificCourse.imageLink} alt={specificCourse.title} style={{ marginTop: 20, width: 300, objectFit: 'fill' }} />
+            </Card>
+        </div >
     );
 }
 
@@ -75,6 +80,8 @@ function UpdateCard(props) {
     const [description, setDescription] = useState('');
     const [imageLink, setImageLink] = useState('');
     const course = props.specificCourse;
+    const courses = props.courses;
+    const setCourses = props.setCourses;
 
     const changeTitle = (e) => {
         setTitle(e.target.value)
@@ -118,7 +125,7 @@ function UpdateCard(props) {
                     onChange={changeImageLink}
                 />
                 <br /><br />
-                <ButtonMine title={title} description={description} imageLink={imageLink} course={course} />
+                <ButtonMine title={title} description={description} imageLink={imageLink} course={course} courses={courses} setCourses={setCourses} />
             </Card>
         </div>
     )
@@ -126,6 +133,8 @@ function UpdateCard(props) {
 
 function ButtonMine(props) {
     const courseId = props.course.id;
+    const courses = props.courses;
+    const setCourses = props.setCourses;
 
     return (
         <Button size={"large"} variant="contained" onClick={
@@ -144,7 +153,23 @@ function ButtonMine(props) {
                     },
                 }).then((res) => res.json())
                     .then((data) => {
-                        alert(data.message);
+                        //alert(data.message);
+                        let updatedCourses = [];
+                        for (let i = 0; i < courses.length; i++) {
+                            if (courses[i].id == courseId) {
+                                updatedCourses.push({
+                                    id: courseId,
+                                    title: props.title,
+                                    description: props.description,
+                                    imageLink: props.imageLink,
+                                    published: true
+                                })
+                            }
+                            else {
+                                updatedCourses.push(courses[i]);
+                            }
+                        }
+                        setCourses(updatedCourses);
                     });
             }
         } >Update Course</Button>
